@@ -1,6 +1,64 @@
-import { AUTO, Game, Input } from 'phaser';
+import { Scene, AUTO, Game, Input } from 'phaser';
 
-var config = {
+class TestScene extends Scene
+{
+    player;
+    platforms;
+    cursors;
+    jumpCount = 0;
+
+    preload()
+    {
+        this.load.image('ground', 'src/game/assets/debug_ground1.png');
+        this.load.image('player', 'src/game/assets/debug_character1.png');
+    }
+
+    create()
+    {
+        this.platforms = this.physics.add.staticGroup();
+
+        this.platforms.create(100, 575, 'ground');
+        this.platforms.create(300, 575, 'ground');
+        this.platforms.create(500, 575, 'ground');
+        this.platforms.create(700, 575, 'ground');
+
+        this.player = this.physics.add.sprite(100, 450, 'player');
+        this.player.setCollideWorldBounds(true);
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.physics.add.collider(this.player, this.platforms);
+        this.player.body.setMaxVelocity(500);
+    }
+
+    update()
+    {
+        if (this.cursors.left.isDown)
+        {
+            this.player.setVelocityX(-160);
+        }
+        else if (this.cursors.right.isDown)
+        {
+            this.player.setVelocityX(160);
+        }
+        else
+        {
+            this.player.setVelocityX(0);
+        }
+        if (this.player.body.touching.down)
+        {
+            this.jumpCount = 0;
+        }
+        if (Input.Keyboard.JustDown(this.cursors.up) && this.jumpCount < 2)
+        {
+            this.player.setVelocityY(-500);
+            this.jumpCount++;
+        }
+    }
+
+}
+
+const config = {
     type: AUTO,
     width: 800,
     height: 600,
@@ -9,69 +67,10 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 1800 },
-            debug: false
+            debug: true
         }
     },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+    scene: TestScene
 };
 
-
-var player;
-var platforms;
-var cursors;
-var jumpCount = 0;
-
-var game = new Game(config);
-
-function preload ()
-{
-    this.load.image('ground', 'src/game/assets/debug_ground1.png');
-    this.load.image('player', 'src/game/assets/debug_character1.png');
-}
-
-function create()
-{
-    platforms = this.physics.add.staticGroup();
-
-    platforms.create(100, 575, 'ground');
-    platforms.create(300, 575, 'ground');
-    platforms.create(500, 575, 'ground');
-    platforms.create(700, 575, 'ground');
-
-    player = this.physics.add.sprite(100, 450, 'player');
-    player.setCollideWorldBounds(true);
-
-    cursors = this.input.keyboard.createCursorKeys();
-
-    this.physics.add.collider(player, platforms);
-    player.body.setMaxVelocity(500);
-}
-
-function update()
-{
-    if (cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-    }
-    else if (cursors.right.isDown)
-    {
-        player.setVelocityX(160);
-    }
-    else
-    {
-        player.setVelocityX(0);
-    }
-    if (player.body.touching.down)
-    {
-        jumpCount = 0;
-    }
-    if (Input.Keyboard.JustDown(cursors.up) && jumpCount < 2)
-    {
-        player.setVelocityY(-500);
-        jumpCount++;
-    }
-}
+const game = new Game(config);
