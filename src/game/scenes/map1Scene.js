@@ -5,27 +5,27 @@ import DirtPlatform from '../objects/Platform/DirtPlatform';
 export default class Map1Scene extends GameScene
 {
     constructor() {
-        super('TestScene');
+        super('Map1Scene');
     }
 
-    loadAsset()
-    {
+    init(data) {
+        super.init(data);
+        this.setupNeighbors();
+    }
+
+    loadAsset() {
         // 이미지 로드
         this.load.image('ground', 'src/game/assets/debug_ground1.png');
         this.load.image('grass_platform', 'src/game/assets/grass_platform.png');
         this.load.image('dirt_platform', 'src/game/assets/dirt_platform.png');
     }
 
-    
-
-    createPlayer()
-    {
+    createPlayer() {
         // 플레이어 캐릭터 생성
-        this.player = this.physics.add.sprite(100, 450, 'player');
+        this.player = this.physics.add.sprite(this.spawnX, this.spawnY, 'player');
     }
 
-    createMap()
-    {
+    createMap() {
         // 발판 정보 배열화
         const platformData = [
             {x: 25, y: 575, type:GrassPlatform},
@@ -57,6 +57,7 @@ export default class Map1Scene extends GameScene
             {x: 725, y: 375, type:GrassPlatform},
             {x: 725, y: 275, type:GrassPlatform},
             {x: 725, y: 175, type:GrassPlatform},
+            {x: 725, y: 75, type:GrassPlatform},
         ]
 
         // 발판을 실제 배치
@@ -65,4 +66,11 @@ export default class Map1Scene extends GameScene
             this.platforms.add(platform);
         });
     }
+
+    setupNeighbors() {
+        this.neighborScenes.left = 'Map0Scene'
+        this.neighborScenes.right = 'Map2Scene'
+        this.neighborScenes.up = 'Map4Scene'
+    }
+    
 }

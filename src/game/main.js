@@ -1,5 +1,10 @@
-import { AUTO, Game } from 'phaser';
+import { AUTO, Game, Scale } from 'phaser';
 import Map1Scene from './scenes/map1Scene';
+import Map2Scene from './scenes/map2Scene';
+import Map0Scene from './scenes/map0Scene';
+import Map3Scene from './scenes/map3Scene';
+import Map4Scene from './scenes/map4Scene';
+import Map5Scene from './scenes/map5Scene';
 
 const config = {
     type: AUTO,
@@ -13,7 +18,10 @@ const config = {
             debug: true
         }
     },
-    scene: Map1Scene
+        scale: {
+        mode: Scale.FIT
+    },
+    scene: [Map1Scene, Map0Scene, Map2Scene, Map3Scene, Map4Scene, Map5Scene]
 };
 
 const game = new Game(config);
