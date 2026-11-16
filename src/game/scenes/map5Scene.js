@@ -15,7 +15,6 @@ export default class Map5Scene extends GameScene
 
     loadAsset() {
         // 이미지 로드
-        this.load.image('ground', 'src/game/assets/debug_ground1.png');
         this.load.image('grass_platform', 'src/game/assets/grass_platform.png');
         this.load.image('dirt_platform', 'src/game/assets/dirt_platform.png');
     }

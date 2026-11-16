@@ -18,7 +18,7 @@ export default class GameScene extends Scene
         // data 자체가 없으면(게임 첫 시작 시 등) data 객체 생성 후 기본 정보를 초기화
         if (data == undefined) {
             data = {
-                spawnX: 100,
+                spawnX: 150,
                 spawnY: 450,
                 dir: false,
                 initVY: 0,
@@ -28,7 +28,7 @@ export default class GameScene extends Scene
         }
         // data 객체값에 따라 현재 플레이어의 상태를 초기화함
         // (각 객체의 상태값이 정의되어 있지 않다면 여기서 상태값에 기본정보를 초기화)
-        this.spawnX = data.spawnX !== undefined ? data.spawnX : 100;
+        this.spawnX = data.spawnX !== undefined ? data.spawnX : 150;
         this.spawnY = data.spawnY !== undefined ? data.spawnY : 450;
         this.viewDirLeft = data.dir !== undefined ? data.dir : false;
         this.initVY = data.initVY ?? 0;
@@ -71,10 +71,21 @@ export default class GameScene extends Scene
         this.keyRight = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.RIGHT);
         this.keyZ = this.input.keyboard.addKey("Z", true, true);
         this.keyX = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.X);
+        this.keyR = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.R);
 
         this.createMap();
 
         this.createPlayer();
+
+        // 게임에 시작 정보 설정(재시작 시 플레이어 위치 정보 설정)
+        if (this.registry.has('startPosition') == false) {
+            this.registry.set('startPosition', {
+                mapKey: 'Map1Scene',
+                startX: 150,
+                startY: 450,
+                dir: false,
+            })
+        }
 
         if (this.incomingDirection === 1) {
             this.player.setVelocityX(160);
@@ -118,7 +129,7 @@ export default class GameScene extends Scene
     checkMapBounds() {
         const { x, y } = this.player;
 
-        let incomingDir = 0;
+        let incomingDir = this.incomingDirection;
         if (this.keyLeft.isDown)
         {
             incomingDir = -1;
@@ -128,62 +139,55 @@ export default class GameScene extends Scene
             incomingDir = 1;
         }
 
+        let nextSwitchScene = null;
+        let sX = null;
+        let sY = null;
+
         // 1. 오른쪽으로 탈출 (x > 800)
         if (x > 800) {
             if (this.neighborScenes.right) {
-
-                this.switchScene(this.neighborScenes.right, { 
-                    spawnX: 10, 
-                    spawnY: y, 
-                    dir: this.viewDirLeft,  
-                    incomingDirection: incomingDir,
-                    initVY: this.player.body.velocity.y,
-                    jumpCount: this.jumpCount,
-                });
+                nextSwitchScene = this.neighborScenes.right;
+                sX = 10;
+                sY = y;
             }
-            else this.player.x = 800;
+            else this.gameRestart();
         }
         // 2. 왼쪽으로 탈출 (x < 0)
         else if (x < 0) {
             if (this.neighborScenes.left) {
-                this.switchScene(this.neighborScenes.left, { 
-                    spawnX: 790, 
-                    spawnY: y,
-                    dir: this.viewDirLeft,  
-                    incomingDirection: incomingDir,
-                    initVY: this.player.body.velocity.y,
-                    jumpCount: this.jumpCount,
-                });
+                nextSwitchScene = this.neighborScenes.left;
+                sX = 790;
+                sY = y;
             }
-            else this.player.x = 0;
+            else this.gameRestart();
         }
         // 3. 위쪽으로 탈출 (y < 0)
         else if (y < 0) {
             if (this.neighborScenes.up) {
-                this.switchScene(this.neighborScenes.up, { 
-                    spawnX: x, 
-                    spawnY: 590,
-                    dir: this.viewDirLeft,  
-                    incomingDirection: incomingDir,
-                    initVY: this.player.body.velocity.y,
-                    jumpCount: this.jumpCount,
-                });
+                nextSwitchScene = this.neighborScenes.up;
+                sX = x;
+                sY = 590;
             }
-            else this.player.y = 0;
+            else this.gameRestart();
         }
         // 4. 아래쪽으로 탈출 (y > 600)
         else if (y > 600) {
             if (this.neighborScenes.down) {
-                this.switchScene(this.neighborScenes.down, { 
-                    spawnX: x, 
-                    spawnY: 10,
-                    dir: this.viewDirLeft,  
-                    incomingDirection: incomingDir,
-                    initVY: this.player.body.velocity.y,
-                    jumpCount: this.jumpCount,
-                });
+                nextSwitchScene = this.neighborScenes.down;
+                sX = x;
+                sY = 10;
             }
-            else this.player.y = 600;
+            else this.gameRestart();
+        }
+        if (nextSwitchScene !== null) {
+            this.switchScene(nextSwitchScene, { 
+                spawnX: sX, 
+                spawnY: sY,
+                dir: this.viewDirLeft,  
+                incomingDirection: incomingDir,
+                initVY: this.player.body.velocity.y,
+                jumpCount: this.jumpCount,
+            });
         }
     }
 
@@ -228,6 +232,10 @@ export default class GameScene extends Scene
             this.player.setVelocityY(-500);
             this.jumpCount++;
         }
+        if (Input.Keyboard.JustDown(this.keyR))
+        {
+            this.gameRestart();
+        }
 
         // 4방향 경계 체크
         this.checkMapBounds();
@@ -235,6 +243,33 @@ export default class GameScene extends Scene
         if (this.player.body.touching.down)
         {
             this.jumpCount = 0;
+        }
+    }
+
+    // 게임 재시작 로직
+    gameRestart()
+    {
+        // 게임에 시작 지점이 설정되어 있는지 체크해서 해당 정보를 이용해서 씬을 시작
+        if (this.registry.has('startPosition')) {
+            // 이거 설정해줘야 재시작 시에도 이동이 안 끊기고 자연스럽게 이어짐
+            // 왜인지는 모르겠는데 this.incomingDirection 그대로 쓰면 끊김 ㅡㅡ
+            let incomingDir = this.incomingDirection;
+            if (this.keyLeft.isDown)
+            {
+                incomingDir = -1;
+            }
+            else if (this.keyRight.isDown)
+            {
+                incomingDir = 1;
+            }
+            this.switchScene(this.registry.get('startPosition')['mapKey'], { 
+                spawnX: this.registry.get('startPosition')['startX'], 
+                spawnY: this.registry.get('startPosition')['startY'],
+                dir: this.registry.get('startPosition')['dir'],  
+                incomingDirection: incomingDir,
+                initVY: 0,
+                jumpCount: 0,
+            });
         }
     }
 

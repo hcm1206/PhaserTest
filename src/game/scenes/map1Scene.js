@@ -15,7 +15,6 @@ export default class Map1Scene extends GameScene
 
     loadAsset() {
         // 이미지 로드
-        this.load.image('ground', 'src/game/assets/debug_ground1.png');
         this.load.image('grass_platform', 'src/game/assets/grass_platform.png');
         this.load.image('dirt_platform', 'src/game/assets/dirt_platform.png');
     }
@@ -28,7 +27,7 @@ export default class Map1Scene extends GameScene
     createMap() {
         // 발판 정보 배열화
         const platformData = [
-            {x: 25, y: 575, type:GrassPlatform},
+            {x: 0, y: 525, type:GrassPlatform},
             {x: 75, y: 575, type:GrassPlatform},
             {x: 125, y: 575, type:GrassPlatform},
             {x: 175, y: 575, type:GrassPlatform},
@@ -52,7 +51,6 @@ export default class Map1Scene extends GameScene
             {x: 475, y: 525, type:GrassPlatform},
             {x: 525, y: 525, type:GrassPlatform},
             {x: 575, y: 525, type:GrassPlatform},
-
             {x: 725, y: 475, type:GrassPlatform},
             {x: 725, y: 375, type:GrassPlatform},
             {x: 725, y: 275, type:GrassPlatform},
@@ -71,6 +69,7 @@ export default class Map1Scene extends GameScene
         this.neighborScenes.left = 'Map0Scene'
         this.neighborScenes.right = 'Map2Scene'
         this.neighborScenes.up = 'Map4Scene'
+        this.neighborScenes.down = 'Map7Scene'
     }
     
 }
