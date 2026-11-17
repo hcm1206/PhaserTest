@@ -29,6 +29,7 @@ export default class Map1Scene extends GameScene
         const platformData = [
             {x: 0, y: 525, type:GrassPlatform},
             {x: 75, y: 575, type:GrassPlatform},
+            {x: 75, y: 625, type:GrassPlatform},
             {x: 125, y: 575, type:GrassPlatform},
             {x: 175, y: 575, type:GrassPlatform},
             {x: 225, y: 575, type:DirtPlatform},
@@ -43,6 +44,7 @@ export default class Map1Scene extends GameScene
             {x: 675, y: 575, type:GrassPlatform},
             {x: 725, y: 575, type:GrassPlatform},
             {x: 775, y: 575, type:GrassPlatform},
+            {x: 825, y: 575, type:GrassPlatform},
             {x: 225, y: 525, type:GrassPlatform},
             {x: 275, y: 525, type:GrassPlatform},
             {x: 325, y: 525, type:GrassPlatform},

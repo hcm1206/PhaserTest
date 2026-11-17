@@ -55,6 +55,7 @@ export default class Map0Scene extends GameScene
             {x: 625, y: 575, type:GrassPlatform},
             {x: 675, y: 575, type:GrassPlatform},
             {x: 725, y: 575, type:GrassPlatform},
+            {x: 725, y: 625, type:GrassPlatform},
             {x: 800, y: 525, type:GrassPlatform},
             {x: 225, y: 525, type:GrassPlatform},
             {x: 275, y: 525, type:GrassPlatform},

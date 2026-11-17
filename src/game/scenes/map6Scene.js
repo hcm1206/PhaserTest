@@ -25,6 +25,7 @@ export default class Map6Scene extends GameScene
     createMap() {
         // 발판 정보 배열화
         const platformData = [
+            {x: 725, y: 625, type:DirtPlatform},
             {x: 725, y: 575, type:DirtPlatform},
             {x: 725, y: 525, type:DirtPlatform},
             {x: 725, y: 475, type:DirtPlatform},
@@ -37,6 +38,7 @@ export default class Map6Scene extends GameScene
             {x: 725, y: 125, type:DirtPlatform},            
             {x: 725, y: 75, type:DirtPlatform},
             {x: 725, y: 25, type:DirtPlatform},
+            {x: 725, y: -25, type:DirtPlatform},
         ]
 
         // 발판을 실제 배치
@@ -47,7 +49,7 @@ export default class Map6Scene extends GameScene
     }
 
     setupNeighbors() {
-        this.neighborScenes.up = 'Map1Scene'
+        this.neighborScenes.up = 'Map0Scene'
         this.neighborScenes.down = 'Map8Scene'
         this.neighborScenes.right = 'Map7Scene'
     }

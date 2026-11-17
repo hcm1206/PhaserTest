@@ -29,6 +29,7 @@ export default class Map2Scene extends GameScene
     createMap() {
         // 발판 정보 배열화
         const platformData = [
+            {x: -25, y: 575, type:GrassPlatform},
             {x: 25, y: 575, type:GrassPlatform},
             {x: 75, y: 575, type:GrassPlatform},
             {x: 125, y: 575, type:GrassPlatform},

@@ -40,6 +40,7 @@ export default class Map8Scene extends GameScene
             {x: 725, y: 125, type:DirtPlatform},            
             {x: 725, y: 75, type:DirtPlatform},
             {x: 725, y: 25, type:DirtPlatform},
+            {x: 725, y: -25, type:DirtPlatform},
         ]
 
         // 발판을 실제 배치
