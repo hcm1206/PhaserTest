@@ -4,10 +4,7 @@ import { AUTO, Game, Scene, Input } from 'phaser';
 
 export default class GameScene extends Scene
 {
-    player;
-    platforms;
-    jumpCount = 0;
-    bulletCount = 0;
+
 
     constructor(key) {
         super(key);
@@ -34,6 +31,12 @@ export default class GameScene extends Scene
         this.initVY = data.initVY ?? 0;
         this.jumpCount = data.jumpCount ?? 0;
         this.incomingDirection = data.incomingDirection !== undefined ? data.incomingDirection : 0;
+
+        this.player;
+        this.platforms;
+        this.bulletCount = 0;
+        this.gameover = false;
+
 
         // 상하좌우에 이어진 맵 정보 (구현 Scene에서 직접 구현해야 됨)
         this.neighborScenes = {
@@ -65,6 +68,9 @@ export default class GameScene extends Scene
         // 발판 물리 오브젝트 설정
         this.platforms = this.physics.add.staticGroup();
         this.bullets = this.physics.add.staticGroup();
+
+        // 트랩(닿으면 죽음) 물리 오브젝트 설정
+        this.traps = this.physics.add.staticGroup();
 
         // 키보드 조작 객체 생성
         this.keyLeft = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.LEFT);
@@ -113,6 +119,8 @@ export default class GameScene extends Scene
         this.physics.add.collider(this.player, this.platforms);
         // 플레이어 최고 속도 설정(낙하 가속도가 무한으로 적용되지 않기 위함)
         this.player.body.setMaxVelocity(500);
+
+        this.physics.add.collider(this.player, this.traps, this.hitTrap, null, this);
 
         // 맵 진입 시 캐릭터가 움직이고 있었다면 그 속도를 유지
         this.player.setVelocityY(this.initVY);  
@@ -196,8 +204,7 @@ export default class GameScene extends Scene
         this.scene.start(nextSceneKey, spawnData);
     }
 
-    handleControl()
-    {
+    handleCharacterControl() {
         const isLeftDown = this.keyLeft.isDown;
         const isRightDown = this.keyRight.isDown;
         let isMovingX = false;
@@ -232,10 +239,7 @@ export default class GameScene extends Scene
             this.player.setVelocityY(-500);
             this.jumpCount++;
         }
-        if (Input.Keyboard.JustDown(this.keyR))
-        {
-            this.gameRestart();
-        }
+
 
         // 4방향 경계 체크
         this.checkMapBounds();
@@ -244,6 +248,55 @@ export default class GameScene extends Scene
         {
             this.jumpCount = 0;
         }
+    }
+
+    handleControl() {
+        if (this.gameover === false) {
+            this.handleCharacterControl();
+        }
+        if (Input.Keyboard.JustDown(this.keyR)) {
+            this.gameRestart();
+        }
+    }
+
+    hitTrap(player, trap) {
+        if (this.gameover) return;
+
+        this.gameover = true;
+
+        player.setTint(0x888888);
+        player.setVelocity(0, 0);
+        player.setAcceleration(0, 0);
+        player.body.setAllowGravity(false);
+        player.setImmovable(true);
+        
+        const { width, height } = this.scale;
+        this.add.text(width / 2, height / 2, 'GAME OVER', {
+            fontSize: '48px',
+            fontStyle: 'bold',
+            color: '#ffffff',
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#000000',
+                blur: 0,
+                stroke: false,
+                fill: false
+            },
+        }).setOrigin(0.5);
+        this.add.text(width / 2, height / 2 + 60, 'Press \'R\' To Restart', {
+            fontSize: '24px',
+            color: '#f0f0f0',
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#000000',
+                blur: 0,
+                stroke: false,
+                fill: false
+            },
+        }).setOrigin(0.5);
+
     }
 
     // 게임 재시작 로직
@@ -276,6 +329,7 @@ export default class GameScene extends Scene
     update()
     {
         this.handleControl();
+
 
         // 총 쏘기 공사 중
         /*

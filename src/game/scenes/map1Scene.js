@@ -1,6 +1,7 @@
 import GameScene from './gameScene';
 import GrassPlatform from '../objects/Platform/GrassPlatform'
 import DirtPlatform from '../objects/Platform/DirtPlatform';
+import DebugTrap from '../objects/Trap/DebugTrap';
 
 export default class Map1Scene extends GameScene
 {
@@ -17,6 +18,7 @@ export default class Map1Scene extends GameScene
         // 이미지 로드
         this.load.image('grass_platform', 'src/game/assets/grass_platform.png');
         this.load.image('dirt_platform', 'src/game/assets/dirt_platform.png');
+        this.load.image('debug_trap', 'src/game/assets/debug_trap.png')
     }
 
     createPlayer() {
@@ -60,11 +62,23 @@ export default class Map1Scene extends GameScene
             {x: 725, y: 75, type:GrassPlatform},
         ]
 
+        const trapData = [
+            {x: 300, y: 480, type:DebugTrap},
+            {x: 400, y: 480, type:DebugTrap},
+            {x: 400, y: 440, type:DebugTrap},
+            {x: 500, y: 480, type:DebugTrap},
+        ]
+
         // 발판을 실제 배치
         platformData.forEach(data => {
             const platform = new data.type(this, data.x, data.y);
             this.platforms.add(platform);
         });
+
+        trapData.forEach(data => {
+            const trap = new data.type(this, data.x, data.y);
+            this.traps.add(trap);
+        })
     }
 
     setupNeighbors() {
