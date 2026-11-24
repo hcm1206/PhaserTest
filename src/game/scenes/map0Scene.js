@@ -28,50 +28,61 @@ export default class Map0Scene extends GameScene
     createMap() {
         // 발판 정보 배열화
         const platformData = [
-            {x: 25, y: 575, type:DirtPlatform},
-            {x: 25, y: 525, type:DirtPlatform},
-            {x: 25, y: 475, type:DirtPlatform},
-            {x: 75, y: 475, type:GrassPlatform},
-            {x: 25, y: 425, type:DirtPlatform},
-            {x: 25, y: 375, type:DirtPlatform},
-            {x: 25, y: 325, type:DirtPlatform},
-            {x: 25, y: 275, type:DirtPlatform},
-            {x: 25, y: 225, type:DirtPlatform},
-            {x: 25, y: 175, type:DirtPlatform},
-            {x: 25, y: 125, type:DirtPlatform},
-            {x: 25, y: 75, type:DirtPlatform},
-            {x: 25, y: 25, type:DirtPlatform},
-            {x: 75, y: 575, type:GrassPlatform},
-            {x: 125, y: 575, type:GrassPlatform},
-            {x: 175, y: 575, type:GrassPlatform},
-            {x: 225, y: 575, type:DirtPlatform},
-            {x: 275, y: 575, type:DirtPlatform},
-            {x: 325, y: 575, type:DirtPlatform},
-            {x: 375, y: 575, type:DirtPlatform},
-            {x: 425, y: 575, type:DirtPlatform},
-            {x: 475, y: 575, type:DirtPlatform},
-            {x: 525, y: 575, type:DirtPlatform},
-            {x: 575, y: 575, type:DirtPlatform},
-            {x: 625, y: 575, type:GrassPlatform},
-            {x: 675, y: 575, type:GrassPlatform},
-            {x: 725, y: 575, type:GrassPlatform},
-            {x: 725, y: 625, type:GrassPlatform},
-            {x: 800, y: 525, type:GrassPlatform},
-            {x: 225, y: 525, type:GrassPlatform},
-            {x: 275, y: 525, type:GrassPlatform},
-            {x: 325, y: 525, type:GrassPlatform},
-            {x: 375, y: 525, type:GrassPlatform},
-            {x: 425, y: 525, type:GrassPlatform},
-            {x: 475, y: 525, type:GrassPlatform},
-            {x: 525, y: 525, type:GrassPlatform},
-            {x: 575, y: 525, type:GrassPlatform},
+            {x: 25, y: 575, hb: false, type:DirtPlatform},
+            {x: 25, y: 525, hb: false, type:DirtPlatform},
+            {x: 25, y: 475, hb: false, type:DirtPlatform},
+            {x: 75, y: 475, hb: true, type:GrassPlatform},
+            {x: 25, y: 425, hb: false, type:DirtPlatform},
+            {x: 25, y: 375, hb: false, type:DirtPlatform},
+            {x: 25, y: 325, hb: false, type:DirtPlatform},
+            {x: 25, y: 275, hb: false, type:DirtPlatform},
+            {x: 25, y: 225, hb: false, type:DirtPlatform},
+            {x: 25, y: 175, hb: false, type:DirtPlatform},
+            {x: 25, y: 125, hb: false, type:DirtPlatform},
+            {x: 25, y: 75, hb: false, type:DirtPlatform},
+            {x: 25, y: 25, hb: false, type:DirtPlatform},
+            {x: 75, y: 575, hb: true, type:GrassPlatform},
+            {x: 125, y: 575, hb: true, type:GrassPlatform},
+            {x: 175, y: 575, hb: true, type:GrassPlatform},
+            {x: 225, y: 575, hb: true, type:DirtPlatform},
+            {x: 275, y: 575, hb: true, type:DirtPlatform},
+            {x: 325, y: 575, hb: true, type:DirtPlatform},
+            {x: 375, y: 575, hb: true, type:DirtPlatform},
+            {x: 425, y: 575, hb: true, type:DirtPlatform},
+            {x: 475, y: 575, hb: true, type:DirtPlatform},
+            {x: 525, y: 575, hb: true, type:DirtPlatform},
+            {x: 575, y: 575, hb: true, type:DirtPlatform},
+            {x: 625, y: 575, hb: true, type:GrassPlatform},
+            {x: 675, y: 575, hb: true, type:GrassPlatform},
+            {x: 725, y: 575, hb: true, type:GrassPlatform},
+            {x: 725, y: 625, hb: true, type:GrassPlatform},
+            {x: 800, y: 525, hb: true, type:GrassPlatform},
+            {x: 225, y: 525, hb: true, type:GrassPlatform},
+            {x: 275, y: 525, hb: true, type:GrassPlatform},
+            {x: 325, y: 525, hb: true, type:GrassPlatform},
+            {x: 375, y: 525, hb: true, type:GrassPlatform},
+            {x: 425, y: 525, hb: true, type:GrassPlatform},
+            {x: 475, y: 525, hb: true, type:GrassPlatform},
+            {x: 525, y: 525, hb: true, type:GrassPlatform},
+            {x: 575, y: 525, hb: true, type:GrassPlatform},
+        ]
+
+        const hbPlatformData = [
+            {x: 25, y: 300, w: 50, h: 600},
         ]
 
         // 발판을 실제 배치
         platformData.forEach(data => {
-            const platform = new data.type(this, data.x, data.y);
+            const platform = new data.type(this, data.x, data.y, data.hb);
             this.platforms.add(platform);
         });
+
+        // 투명 발판 배치
+        hbPlatformData.forEach(data => {
+            const hbPlatform = this.add.zone(data.x, data.y, data.w, data.h);
+            this.physics.add.existing(hbPlatform, true);
+            this.platforms.add(hbPlatform);
+        })
     }
 
     setupNeighbors() {

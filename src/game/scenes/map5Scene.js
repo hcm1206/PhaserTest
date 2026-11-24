@@ -34,7 +34,7 @@ export default class Map5Scene extends GameScene
 
         // 발판을 실제 배치
         platformData.forEach(data => {
-            const platform = new data.type(this, data.x, data.y);
+            const platform = new data.type(this, data.x, data.y, data.hb);
             this.platforms.add(platform);
         });
     }

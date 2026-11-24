@@ -25,27 +25,38 @@ export default class Map6Scene extends GameScene
     createMap() {
         // 발판 정보 배열화
         const platformData = [
-            {x: 725, y: 625, type:DirtPlatform},
-            {x: 725, y: 575, type:DirtPlatform},
-            {x: 725, y: 525, type:DirtPlatform},
-            {x: 725, y: 475, type:DirtPlatform},
-            {x: 725, y: 425, type:DirtPlatform},
-            {x: 725, y: 375, type:DirtPlatform},
-            {x: 725, y: 325, type:DirtPlatform},            
-            {x: 725, y: 275, type:DirtPlatform},
-            {x: 725, y: 225, type:DirtPlatform},
-            {x: 725, y: 175, type:DirtPlatform},
-            {x: 725, y: 125, type:DirtPlatform},            
-            {x: 725, y: 75, type:DirtPlatform},
-            {x: 725, y: 25, type:DirtPlatform},
-            {x: 725, y: -25, type:DirtPlatform},
+            {x: 725, y: 625, hb: false, type:DirtPlatform},
+            {x: 725, y: 575, hb: false, type:DirtPlatform},
+            {x: 725, y: 525, hb: false, type:DirtPlatform},
+            {x: 725, y: 475, hb: false, type:DirtPlatform},
+            {x: 725, y: 425, hb: false, type:DirtPlatform},
+            {x: 725, y: 375, hb: false, type:DirtPlatform},
+            {x: 725, y: 325, hb: false, type:DirtPlatform},            
+            {x: 725, y: 275, hb: false, type:DirtPlatform},
+            {x: 725, y: 225, hb: false, type:DirtPlatform},
+            {x: 725, y: 175, hb: false, type:DirtPlatform},
+            {x: 725, y: 125, hb: false, type:DirtPlatform},            
+            {x: 725, y: 75, hb: false, type:DirtPlatform},
+            {x: 725, y: 25, hb: false, type:DirtPlatform},
+            {x: 725, y: -25, hb: false, type:DirtPlatform},
+        ]
+
+        const hbPlatformData = [
+            {x: 725, y: 400, w: 50, h: 600},
         ]
 
         // 발판을 실제 배치
         platformData.forEach(data => {
-            const platform = new data.type(this, data.x, data.y);
+            const platform = new data.type(this, data.x, data.y, data.hb);
             this.platforms.add(platform);
         });
+
+        // 투명 발판 배치
+        hbPlatformData.forEach(data => {
+            const hbPlatform = this.add.zone(data.x, data.y, data.w, data.h);
+            this.physics.add.existing(hbPlatform, true);
+            this.platforms.add(hbPlatform);
+        })
     }
 
     setupNeighbors() {
