@@ -36,7 +36,7 @@ export default class Map4Scene extends GameScene
             {x: 375, y: 525, type:GrassPlatform},
             {x: 325, y: 525, type:GrassPlatform},
             {x: 275, y: 425, type:GrassPlatform},
-        ]
+        ];
 
         // 발판을 실제 배치
         platformData.forEach(data => {
@@ -46,9 +46,9 @@ export default class Map4Scene extends GameScene
     }
 
     setupNeighbors() {
-        this.neighborScenes.left = 'Map5Scene'
-        this.neighborScenes.right = 'Map3Scene'
-        this.neighborScenes.down = 'Map1Scene'
+        this.neighborScenes.left = 'Map5Scene';
+        this.neighborScenes.right = 'Map3Scene';
+        this.neighborScenes.down = 'Map1Scene';
     }
 
 }

@@ -44,8 +44,8 @@ export default class Map8Scene extends GameScene
         ]
 
         const hbPlatformData = [
-            {x: 725, y: 400, w: 50, h: 600},
-        ]
+            {x: 725, y: 300, w: 50, h: 700},
+        ];
 
         // 발판을 실제 배치
         platformData.forEach(data => {
@@ -58,13 +58,28 @@ export default class Map8Scene extends GameScene
             const hbPlatform = this.add.zone(data.x, data.y, data.w, data.h);
             this.physics.add.existing(hbPlatform, true);
             this.platforms.add(hbPlatform);
-        })
+        });
+
+        const { width, height } = this.scale;
+        this.add.text(width / 2 - 100, height / 2, 'Press R To Restart', {
+            fontSize: '20px',
+            fontFamily: 'Courier',
+            color: '#f0f0f0',
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#000000',
+                blur: 0,
+                stroke: false,
+                fill: false
+            },
+        }).setOrigin(0.5);
 
     }
 
     setupNeighbors() {
-        this.neighborScenes.up = 'Map6Scene'
-        this.neighborScenes.right = 'Map9Scene'
+        this.neighborScenes.up = 'Map6Scene';
+        this.neighborScenes.right = 'Map9Scene';
     }
     
 }

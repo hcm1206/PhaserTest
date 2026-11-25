@@ -42,7 +42,7 @@ export default class Map6Scene extends GameScene
         ]
 
         const hbPlatformData = [
-            {x: 725, y: 400, w: 50, h: 600},
+            {x: 725, y: 300, w: 50, h: 700},
         ]
 
         // 발판을 실제 배치
@@ -56,13 +56,13 @@ export default class Map6Scene extends GameScene
             const hbPlatform = this.add.zone(data.x, data.y, data.w, data.h);
             this.physics.add.existing(hbPlatform, true);
             this.platforms.add(hbPlatform);
-        })
+        });
     }
 
     setupNeighbors() {
-        this.neighborScenes.up = 'Map0Scene'
-        this.neighborScenes.down = 'Map8Scene'
-        this.neighborScenes.right = 'Map7Scene'
+        this.neighborScenes.up = 'Map0Scene';
+        this.neighborScenes.down = 'Map8Scene';
+        this.neighborScenes.right = 'Map7Scene';
     }
     
 }

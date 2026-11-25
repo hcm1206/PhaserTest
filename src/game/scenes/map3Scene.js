@@ -30,7 +30,7 @@ export default class Map3Scene extends GameScene
         // 발판 정보 배열화
         const platformData = [
             {x: 75, y: 575, type:GrassPlatform},
-        ]
+        ];
 
         // 발판을 실제 배치
         platformData.forEach(data => {
@@ -40,8 +40,8 @@ export default class Map3Scene extends GameScene
     }
 
     setupNeighbors() {
-        this.neighborScenes.left = 'Map4Scene'
-        this.neighborScenes.down = 'Map2Scene'
+        this.neighborScenes.left = 'Map4Scene';
+        this.neighborScenes.down = 'Map2Scene';
     }
 
 }

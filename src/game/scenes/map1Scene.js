@@ -78,14 +78,45 @@ export default class Map1Scene extends GameScene
         trapData.forEach(data => {
             const trap = new data.type(this, data.x, data.y);
             this.traps.add(trap);
-        })
+        });
+
+
+        const { width, height } = this.scale;
+        this.add.text(width / 2, height / 2 - 200, 'Press ←, → To Move Your Character', {
+            fontSize: '20px',
+            fontFamily: 'Courier',
+            color: '#f0f0f0',
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#000000',
+                blur: 0,
+                stroke: false,
+                fill: false
+            },
+        }).setOrigin(0.5);
+
+        this.add.text(width / 2, height / 2 - 150, 'Press Z To Jump', {
+            fontSize: '20px',
+            fontFamily: 'Courier',
+            color: '#f0f0f0',
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#000000',
+                blur: 0,
+                stroke: false,
+                fill: false
+            },
+        }).setOrigin(0.5);
+
     }
 
     setupNeighbors() {
-        this.neighborScenes.left = 'Map0Scene'
-        this.neighborScenes.right = 'Map2Scene'
-        this.neighborScenes.up = 'Map4Scene'
-        this.neighborScenes.down = 'Map7Scene'
+        this.neighborScenes.left = 'Map0Scene';
+        this.neighborScenes.right = 'Map2Scene';
+        this.neighborScenes.up = 'Map4Scene';
+        this.neighborScenes.down = 'Map7Scene';
     }
     
 }

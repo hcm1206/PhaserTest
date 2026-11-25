@@ -35,7 +35,7 @@ export default class GameScene extends Scene
         this.player;
         this.platforms;
         this.bulletCount = 0;
-        this.gameover = false;
+        this.isGameover = false;
 
 
         // 상하좌우에 이어진 맵 정보 (구현 Scene에서 직접 구현해야 됨)
@@ -120,7 +120,7 @@ export default class GameScene extends Scene
         // 플레이어 최고 속도 설정(낙하 가속도가 무한으로 적용되지 않기 위함)
         this.player.body.setMaxVelocity(500);
 
-        this.physics.add.collider(this.player, this.traps, this.hitTrap, null, this);
+        this.physics.add.collider(this.player, this.traps, this.gameover, null, this);
 
         // 맵 진입 시 캐릭터가 움직이고 있었다면 그 속도를 유지
         this.player.setVelocityY(this.initVY);  
@@ -158,7 +158,7 @@ export default class GameScene extends Scene
                 sX = 10;
                 sY = y;
             }
-            else this.gameRestart();
+            else this.gameover();
         }
         // 2. 왼쪽으로 탈출 (x < 0)
         else if (x < 0) {
@@ -167,7 +167,7 @@ export default class GameScene extends Scene
                 sX = 790;
                 sY = y;
             }
-            else this.gameRestart();
+            else this.gameover();
         }
         // 3. 위쪽으로 탈출 (y < 0)
         else if (y < 0) {
@@ -176,7 +176,7 @@ export default class GameScene extends Scene
                 sX = x;
                 sY = 590;
             }
-            else this.gameRestart();
+            else this.gameover();
         }
         // 4. 아래쪽으로 탈출 (y > 600)
         else if (y > 600) {
@@ -185,7 +185,7 @@ export default class GameScene extends Scene
                 sX = x;
                 sY = 10;
             }
-            else this.gameRestart();
+            else this.gameover();
         }
         if (nextSwitchScene !== null) {
             this.switchScene(nextSwitchScene, { 
@@ -251,7 +251,7 @@ export default class GameScene extends Scene
     }
 
     handleControl() {
-        if (this.gameover === false) {
+        if (this.isGameover === false) {
             this.handleCharacterControl();
         }
         if (Input.Keyboard.JustDown(this.keyR)) {
@@ -259,16 +259,16 @@ export default class GameScene extends Scene
         }
     }
 
-    hitTrap(player, trap) {
-        if (this.gameover) return;
+    gameover() {
+        if (this.isGameover) return;
 
-        this.gameover = true;
+        this.isGameover = true;
 
-        player.setTint(0x888888);
-        player.setVelocity(0, 0);
-        player.setAcceleration(0, 0);
-        player.body.setAllowGravity(false);
-        player.setImmovable(true);
+        this.player.setTint(0x888888);
+        this.player.setVelocity(0, 0);
+        this.player.setAcceleration(0, 0);
+        this.player.body.setAllowGravity(false);
+        this.player.setImmovable(true);
         
         const { width, height } = this.scale;
         this.add.text(width / 2, height / 2, 'GAME OVER', {

@@ -1,5 +1,5 @@
 import GameScene from './gameScene';
-import GrassPlatform from '../objects/Platform/GrassPlatform'
+import GrassPlatform from '../objects/Platform/GrassPlatform';
 import DirtPlatform from '../objects/Platform/DirtPlatform';
 
 export default class Map0Scene extends GameScene
@@ -65,11 +65,11 @@ export default class Map0Scene extends GameScene
             {x: 475, y: 525, hb: true, type:GrassPlatform},
             {x: 525, y: 525, hb: true, type:GrassPlatform},
             {x: 575, y: 525, hb: true, type:GrassPlatform},
-        ]
+        ];
 
         const hbPlatformData = [
             {x: 25, y: 300, w: 50, h: 600},
-        ]
+        ];
 
         // 발판을 실제 배치
         platformData.forEach(data => {
@@ -82,13 +82,13 @@ export default class Map0Scene extends GameScene
             const hbPlatform = this.add.zone(data.x, data.y, data.w, data.h);
             this.physics.add.existing(hbPlatform, true);
             this.platforms.add(hbPlatform);
-        })
+        });
     }
 
     setupNeighbors() {
-        this.neighborScenes.right = 'Map1Scene'
-        this.neighborScenes.up = 'Map5Scene'
-        this.neighborScenes.down = 'Map6Scene'
+        this.neighborScenes.right = 'Map1Scene';
+        this.neighborScenes.up = 'Map5Scene';
+        this.neighborScenes.down = 'Map6Scene';
     }
     
 }
